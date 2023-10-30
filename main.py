@@ -13,8 +13,8 @@ sleep(2)
 
 dataform = open('data.txt')
 line  = dataform.readlines()
-search_button = driver.find_element(By.XPATH,'/html/body/section[1]/div/div[1]/div[1]/form/div/div/div/div/div[2]/button')
-search_field = driver.find_element(By.XPATH,'/html/body/section[1]/div/div[1]/div[1]/form/div/div/div/div/div[1]/input')
+search_button = driver.find_element(By.XPATH,'/html/body/main/section[1]/div/div[1]/div[1]/form/div/div/div/div/div[2]/button')
+search_field = driver.find_element(By.XPATH,'/html/body/main/section[1]/div/div[1]/div[1]/form/div/div/div/div/div[1]/input')
 search_contain = line[0]
 search_field.send_keys(search_contain)
 search_button.click()
@@ -31,14 +31,36 @@ def GetURL(): #Hàm dùng để lặp đi lăp lại nếu muốn search nhiều
         if profile_URL not in all_profile_URL:
             all_profile_URL.append(profile_URL)
     return all_profile_URL
-#print(GetURL())
 
-all_URL = GetURL()
-driver.get(all_URL[0])
-page_source1 = BeautifulSoup(driver.page_source,'html.parser')
-info_div = page_source1.find('div',class_ = 'flex flex-wrap')
-#print(info_div)
 
+# def Get_info():
+#     all_URL = GetURL()
+#     driver.get(all_URL[0])
+#     page_source = BeautifulSoup(driver.page_source,'html.parser')
+#     info_b = page_source.find_all('a',class_ = 'text-sm hover:text-primary-300 hover:underline md:text-base')
+#     all_info = []
+#     for info in info_b:
+#         info_need = info.get('title')
+#         if(info_need not in all_info):
+#             all_info.append(info_need)
+#     return all_info
+
+URL_onepage = GetURL()
+for url in URL_onepage:
+    driver.get(url)
+    sleep(2)
+    page_source = BeautifulSoup(driver.page_source,'html.parser')
+    info_b = page_source.find_all('a',class_ = 'text-sm hover:text-primary-300 hover:underline md:text-base')
+    all_info = []
+    for info in info_b:
+         info_need = info.get('title')
+         if(info_need not in all_info):
+             all_info.append(info_need)
+    print(all_info)
+    print('\n')
+
+    
+    
 
     
 
